@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Form</title>
+</head>
+<body>
+  <h1>Add User</h1>
+  <form id="userForm">
+    <input type="text" name="name" placeholder="Name" required />
+    <input type="number" name="age" placeholder="Age" required />
+    <input type="text" name="mobile" placeholder="Mobile" required />
+    <button type="submit">Add</button>
+  </form>
+
+  <h2>User List</h2>
+  <ul id="userList"></ul>
+
+  <script>
+    async function fetchUsers() {
+      const res = await fetch("http://localhost:5000/api/users");
+      const users = await res.json();
+      const list = document.getElementById("userList");
+      list.innerHTML = "";
+      users.forEach(u => {
+        const li = document.createElement("li");
+        li.textContent = `${u.name} - ${u.age} - ${u.mobile}`;
+        list.appendChild(li);
+      });
+    }
+
+    document.getElementById("userForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      await fetch("http://localhost:5000/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      e.target.reset();
+      fetchUsers();
+    });
+
+    fetchUsers();
+  </script>
+</body>
+</html>
+
