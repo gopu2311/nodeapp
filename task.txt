@@ -1,0 +1,2 @@
+Setup sample node js application which can insert (for example user details like name,age,mobile no) in mysql database - need to run it through docker-compose
+
